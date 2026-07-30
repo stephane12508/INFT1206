@@ -1,56 +1,55 @@
-const displayedImage = document.querySelector(".displayed-img");
-const thumbBar = document.querySelector(".thumb-bar");
+/*
+Name: Joel ngniayie
+File: main.js
+Date: 30 July 2026
+Populates the thumbnail bar, handles clicking thumbnails to change the
+displayed image, and toggles the darken/lighten button.
+*/
 
-const btn = document.querySelector("button");
-const overlay = document.querySelector(".overlay");
 
-// Data object: image filenames + their alt text
+const displayedImage = document.querySelector('.displayed-img');
+const thumbBar = document.querySelector('.thumb-bar');
+const btn = document.querySelector('.dark');
 
-const images = [
-  { filename: "pic1.jpg", alt: "Closeup of a human eye" },
-  { filename: "pic2.jpg", alt: "Rock that looks like a wave" },
-  { filename: "pic3.jpg", alt: "Purple and white pansies" },
-  { filename: "pic4.jpg", alt: "Section of wall from a pharaoh's tomb" },
-  { filename: "pic5.jpg", alt: "Large moth on a leaf" },
+const imageFilenames = [
+  'pic1.jpg',
+  'pic2.jpg',
+  'pic3.jpg',
+  'pic4.jpg',
+  'pic5.jpg'
 ];
 
-// Base URL for all images
+// 3. Alt text for each image, matched by index to imageFilenames
+const altText = [
+  'Closeup of blue and green feathers',
+  'Whale breaching with water splashing',
+  'Fire dancer holding torches',
+  'Wall with graffiti art',
+  'Sunset over the sea'
+];
 
-const baseURL =
-  "https://mdn.github.io/shared-assets/images/examples/learn/gallery/";
-
-// Loop through images and build the thumbnail bar
-
-for (const image of images) {
-  const newImage = document.createElement("img");
-  newImage.src = `${baseURL}${image.filename}`;
-  newImage.alt = image.alt;
-  newImage.tabIndex = "0"; // makes it focusable via keyboard (task #5)
-
+// 4. Loop through the images, creating a thumbnail for each
+for (let i = 0; i < imageFilenames.length; i++) {
+  const newImage = document.createElement('img');
+  newImage.setAttribute('src', `images/${imageFilenames[i]}`);
+  newImage.setAttribute('alt', altText[i]);
   thumbBar.appendChild(newImage);
 
-  // Task #7: update displayed image when a thumbnail is clicked
-  newImage.addEventListener("click", updateDisplayedImage);
-
-  // Task #8 (skipped per assignment instructions - stretch goal)
+  // 5. Add a click handler to each thumbnail
+  newImage.addEventListener('click', (e) => {
+    displayedImage.setAttribute('src', e.target.getAttribute('src'));
+    displayedImage.setAttribute('alt', e.target.getAttribute('alt'));
+  });
 }
 
-// Update the full-size image + alt text when a thumbnail is activated
+btn.addEventListener('click', () => {
+  const currentClass = btn.getAttribute('class');
 
-function updateDisplayedImage(e) {
-  displayedImage.src = e.target.src;
-  displayedImage.alt = e.target.alt;
-}
-
-// Darken/Lighten button logic
-
-btn.addEventListener("click", () => {
-  if (btn.classList.contains("dark")) {
-    btn.textContent = "Lighten";
-    overlay.style.backgroundColor = "rgb(0 0 0 / 0.5)";
+  if (currentClass === 'dark') {
+    btn.setAttribute('class', 'light');
+    btn.textContent = 'Lighten';
   } else {
-    btn.textContent = "Darken";
-    overlay.style.backgroundColor = "rgb(0 0 0 / 0)";
+    btn.setAttribute('class', 'dark');
+    btn.textContent = 'Darken';
   }
-  btn.classList.toggle("dark");
 });
